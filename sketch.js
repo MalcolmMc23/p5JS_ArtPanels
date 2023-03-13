@@ -75,16 +75,24 @@ function slide() {
 
 
   //checks if the camLoc is past the fist page and sets it to 0 if true.
-  if (-camLoc.x < 0) {
+  if (-camLoc.x <= 0) {
     camLoc.x = 0;
+    buttLeft.position(-100, canvas.height / 2 - 30)// sets the button outside the view of the page
+  } else {
+    buttLeft.position(10, canvas.height / 2 - 30)// sets the button in the bottem left
   }
   // checks if the camLoc is past the last page and set it to the loc of hte last page if it is.
-  if (-camLoc.x > pages[pages.length - 1].loc.x) {
+  if (-camLoc.x >= pages[pages.length - 1].loc.x) {
     timer = canvas.width / 2
     movingRight = false;
     movingLeft = false;
     camLoc.x = -pages[pages.length - 1].loc.x
+    buttRight.position(-100, canvas.height / 2 - 30) // sets the button in the bottem right
+  } else {
+    buttRight.position(canvas.width / 2 - 90, canvas.height / 2 - 30) // sets the button out side of the view of the page
+
   }
+
 }
 
 // NOTE: the keyPressed function is only so you can move freely and should be removed later!
