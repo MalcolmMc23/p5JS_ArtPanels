@@ -2,6 +2,7 @@
 
 // use WASD to move freely around the page
 let page, camLoc, buttLeft, buttRight, timer
+let buttL, buttR;
 let pages = [];
 let numOfPages = 3;
 let movingRight = false;
@@ -20,17 +21,20 @@ function setup() {
   for (let i = 0; i < numOfPages; i++) {
     pages[i] = new Page(canvas.width / 2 * i, 0, i, pageImg[1]);
   }
+
   buttLeft = createButton("Move Left"); // creates a button
   buttLeft.position(10, canvas.height / 2 - 30)// sets the button in the bottem left
   buttRight = createButton("Move Right"); // creates a button
   buttRight.position(canvas.width / 2 - 90, canvas.height / 2 - 30) // sets the button in the bottem right
   timer = canvas.width / 2
 
+  buttL = new Button(100, 100, 100, 50, 100);
+  // buttR = new Button(x, y, w, h, c);
+
 }
 
 function draw() {
   background(220);
-
   buttRight.mousePressed(goRight) // right button listener
   buttLeft.mousePressed(goLeft) // left button listener
 
@@ -42,6 +46,7 @@ function draw() {
   for (let i = 0; i < numOfPages; i++) {
     pages[i].run();
   }
+  buttL.run()
   pop();
 }
 function goRight() {
@@ -133,5 +138,35 @@ class Page {
     line(this.loc.x, this.loc.y, this.loc.x, this.loc.y + this.h)
     line(this.loc.x, this.loc.y + this.h, this.loc.x + this.w, this.loc.y + this.h)
     line(this.loc.x + this.w, this.loc.y, this.loc.x + this.w, this.h)
+  }
+}
+class Button {
+  constructor(x, y, w, h, c) {
+    this.loc = new createVector(x, y);
+    this.w = w;
+    this.h = h;
+    this.clr = "green"
+  }
+  run() {
+    this.render()
+    this.checkMouse();
+  }
+  render() {
+    fill(this.clr)
+    noStroke()
+    rect(this.loc.x, this.loc.y, this.w, this.h, 20)
+  }
+  checkMouse() {
+    if (
+      mouseX > this.loc.x &&
+      mouseX < this.loc.x + this.w &&
+      mouseY > this.loc.y &&
+      mouseY < this.loc.y + this.h
+    ) {
+      this.clr = "red"
+    } else {
+      this.clr = "green"
+
+    }
   }
 }
