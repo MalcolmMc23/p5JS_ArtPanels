@@ -1,4 +1,23 @@
 //TO DO: make a pause button that covers the screen but keeps the background.
+// Global variables will be created in solidity. Here not for ease of testing.
+// Artwork panel
+let artWorkIPFS = "Qmb4obBzUofeZtcUxhEWUYCmhneZMzCrBQrNGnJnqKNyDq"
+let scoreCardIPFS= "QmTSBSHXJgnVg16pjxnH3CAqkL4QDtBwr6aSHkbvhZFmR3"
+let gameIPFS = "QmTSBSHXJgnVg16pjxnH3CAqkL4QDtBwr6aSHkbvhZFmR3"
+
+// Game panel text
+let tierName = "Warriors"
+let prizePool = '123' // Ξ
+let phase = '1'; // 1 = mint, 2 = refund, 3 = active game 4 = game over claim open
+let timeRemaining = 'xyz';
+let totalMinted = '123'; // Int
+let burnToClaim = '69.4201'; // Ξ
+// Scorecard panel text
+// TODO: add more text from solidity to create barchart style scorecard
+// Font file
+// let font = has been moved to own file for testing. Will be set in solidity.
+// called in sol using DefifaFontImporter.getSkinnyFontSource(),
+// End globals 
 
 // use WASD to move freely around the page
 let page, camLoc, buttLeft, buttRight, timer
@@ -8,24 +27,63 @@ let numOfPages = 3;
 let movingRight = false;
 let movingLeft = false;
 let isPaused = false;
+let artWorkPanel = "https://gateway.pinata.cloud/ipfs/" + artWorkIPFS;
+let scoreCardPanel = "https://gateway.pinata.cloud/ipfs/" + scoreCardIPFS;
+let gamePanel = "https://gateway.pinata.cloud/ipfs/" + gameIPFS;
 
+let defifaBlue = [19,228,240];
+
+let txt1 = [
+  ["Prize Pool: ", defifaBlue],
+  [prizePool, defifaBlue],
+  ["", defifaBlue]
+];
+let txt2 = [
+  ["Phase: ", defifaBlue],
+  [phase, defifaBlue],
+  ["", defifaBlue]
+];
+let txt3 = [
+  ["Time Remaining: ", defifaBlue],
+  [timeRemaining, defifaBlue],
+  ["", defifaBlue]
+];
+let txt4 = [
+  ["Total Minted: ", defifaBlue],
+  [totalMinted, defifaBlue],
+  ["", defifaBlue]
+];
+let txt5 = [
+  ["Burn to Claim: ", defifaBlue],
+  [burnToClaim, defifaBlue],
+  ["", defifaBlue]
+]; 
+let txt6 = [
+  ["Team: ", defifaBlue],
+  [tierName, defifaBlue],
+  ["", defifaBlue]
+]; 
 let pageImg = []
 
 function preload() {
-
-  pageImg[1] = loadImage(skyAndEarth);
+  pageImg[0] = loadImage(artWorkPanel);
+  pageImg[1] = loadImage(scoreCardPanel);
+  pageImg[2] = loadImage(gamePanel);
 }
 function setup() {
+  myFont = loadFont(font);
   createCanvas(400, 400);
   camLoc = createVector(0, 0); // camLoc just means camera location. this will be the location of the canvas.
   for (let i = 0; i < numOfPages; i++) {
-    pages[i] = new Page(canvas.width / 2 * i, 0, i, pageImg[1]);
+    buttLeft = createButton("Artwork"); 
+    buttLeft.position(10, canvas.height/2 - 30)
+    buttRight = createButton("Score Card"); // creates a button
+    buttRight.style('background-color', color(defifaBlue));
+    buttRight.position(canvas.width/2 - 90, canvas.height/2 - 30) // sets the button in the bottem right
+    for (let i = 0; i < numOfPages; i++) {
+      pages[i] = new Page(canvas.width / 2 * i, 0, i, pageImg[i]);
+    }
   }
-
-  buttLeft = createButton("Move Left"); // creates a button
-  buttLeft.position(10, canvas.height / 2 - 30)// sets the button in the bottem left
-  buttRight = createButton("Move Right"); // creates a button
-  buttRight.position(canvas.width / 2 - 90, canvas.height / 2 - 30) // sets the button in the bottem right
   timer = canvas.width / 2
 
   buttL = new Button(100, 100, 100, 50, 100);
@@ -114,24 +172,52 @@ function keyPressed() { //key listener for moving with w a s d
   }
 }
 
+function drawtext( x, y, text_array ) {
+  
+  var pos_x = x;
+  for ( var i = 0; i < text_array.length; ++ i ) {
+      var part = text_array[i];
+      var t = part[0];
+      var c = part[1];
+      var w = textWidth( t );
+      fill( c );
+      text( t, pos_x, y);
+      pos_x += w;
+  }
+}
+
 class Page {
   constructor(x, y, pageIndex, img) {
     this.loc = createVector(x, y); // the x and y are the top left of the page
     // for some reason the canvas width and height is double what is suposted to be so i just divided it by 2
-    this.w = canvas.width / 2;
-    this.h = canvas.height / 2;
+    this.w = canvas.width/2; 
+    this.h = canvas.height/2;
     this.pageNum = pageIndex + 1; // added one so you start at page 1 not page 0
     this.img = img;
   }
 
   run() {
     // image(this.img, this.loc.x, this.loc.y, canvas.width/2, canvas.heigh/2)
-    image(this.img, this.loc.x, this.loc.y, 400, 400)
+    image(this.img, this.loc.x, this.loc.y,400, 400)
 
     // just shows the text
     textSize(20);
-    text("page #" + this.pageNum, this.loc.x + 100, this.loc.y + 100);
-
+    textAlign(LEFT);
+    textFont(myFont);
+    
+    //drawtext(this.loc.x + 112, this.loc.y + 30, string );
+    //KMac clean this up, dry
+    if(this.pageNum==2){
+      drawtext(this.loc.x + 112, this.loc.y + 30, txt6 );
+      drawtext(this.loc.x + 112, this.loc.y + 70, txt1 );
+      drawtext(this.loc.x + 112, this.loc.y + 110, txt2 );
+      drawtext(this.loc.x + 112, this.loc.y + 150, txt3 );
+      drawtext(this.loc.x + 112, this.loc.y + 190, txt4 );
+      drawtext(this.loc.x + 112, this.loc.y + 230, txt5 );
+    };
+    if(this.pageNum==3){
+    // to do set text and buttons
+    }
 
     // makes a box around the page
     line(this.loc.x, this.loc.y, this.loc.x + this.w, this.loc.y)
