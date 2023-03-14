@@ -19,7 +19,6 @@ let burnToClaim = '69.4201'; // Ξ
 // called in sol using DefifaFontImporter.getSkinnyFontSource(),
 // End globals 
 
-// use WASD to move freely around the page
 let page, camLoc, buttL, buttR, timer
 let pages = [];
 let numOfPages = 3;
@@ -150,19 +149,6 @@ function slide() {
 
 }
 
-// NOTE: the keyPressed function is only so you can move freely and should be removed later!
-function keyPressed() { //key listener for moving with w a s d
-  let moveSpeed = 20
-  if (keyCode === 87) { // key code for w
-    camLoc.y += moveSpeed;
-  } else if (keyCode === 83) { // key code for s
-    camLoc.y -= moveSpeed
-  } else if (keyCode === 65) { // key code for a
-    camLoc.x += moveSpeed
-  } else if (keyCode === 68) { // key code for d
-    camLoc.x -= moveSpeed
-  }
-}
 
 function drawtext(x, y, text_array) {
 
