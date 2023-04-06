@@ -21,7 +21,7 @@ let burnToClaim = '69.4201'; // Ξ
 
 let page, camLoc, buttL, buttR, timer
 let pages = [];
-let numOfPages = 3;
+let numOfPages = 2;
 let movingRight = false;
 let movingLeft = false;
 let isPaused = false;
