@@ -1,19 +1,45 @@
-//TO DO: make a pause button that covers the screen but keeps the background.
 // Global variables will be created in solidity. Here not for ease of testing.
 // Artwork panel
-let artWorkIPFS = "Qmb4obBzUofeZtcUxhEWUYCmhneZMzCrBQrNGnJnqKNyDq"
-let scoreCardIPFS = "QmTSBSHXJgnVg16pjxnH3CAqkL4QDtBwr6aSHkbvhZFmR3"
-let gameIPFS = "QmTSBSHXJgnVg16pjxnH3CAqkL4QDtBwr6aSHkbvhZFmR3"
-
+let artWorkIPFS = "QmSX1ktBWiTX1BJs8hDEVN93vRVJq6iNrpR36ByjRXfLra"
+let scoreCardIPFS = "QmeB47KfbHetHPpQrPgmD9CxCDb9e2U9j9fxLr1FM3vzMo"
+let buttonImageIPFS = "QmdpL1xN4cAHQw4P1FZzw9P3oQofA8h45PfuTTbpV4BbJV"
 // Game panel text
-let tierName = "Warriors"
-let prizePool = '123' // Ξ
-let phase = '1'; // 1 = mint, 2 = refund, 3 = active game 4 = game over claim open
-let timeRemaining = 'xyz';
-let totalMinted = '123'; // Int
-let burnToClaim = '69.4201'; // Ξ
-// Scorecard panel text
-// TODO: add more text from solidity to create barchart style scorecard
+let txt_1Size = 20;
+let txt_1 = 'Defifiaga' 
+let txt_1Color = "#17e4f1";
+let txt_1_x = 40;
+let txt_1_y = 80;
+
+let txt_2Size = 20;
+let txt_2 = 'Starts soon. Last chance for refund.'; 
+let txt_2Color = "#fea282";
+let txt_2_x = 40;
+let txt_2_y = 250;
+
+let txt_3Size = 20;
+let txt_3 = 'GAME PHASE 4 OF 4';
+let txt_3Color = "#17e4f1";
+let txt_3_x = 40;
+let txt_3_y = 220;
+
+let txt_4Size = 40;
+let txt_4 = 'Golden State'; 
+let txt_4Color = "#fea282";
+let txt_4_x = 40;
+let txt_4_y = 130;
+
+let txt_5Size = 16;
+let txt_5 = 'text 5'; 
+let txt_5Color = "#FFFFFF";
+let txt_5_x = 40;
+let txt_5_y = 370;
+
+let txt_6Size = 16;
+let txt_6 = 'Text 6'; 
+let txt_6Color = "#FFFFFF";
+let txt_6_x = 40;
+let txt_6_y = 400;
+
 // Font file
 // let font = has been moved to own file for testing. Will be set in solidity.
 // called in sol using DefifaFontImporter.getSkinnyFontSource(),
@@ -25,62 +51,54 @@ let numOfPages = 2;
 let movingRight = false;
 let movingLeft = false;
 let isPaused = false;
-let artWorkPanel = "https://gateway.pinata.cloud/ipfs/" + artWorkIPFS;
-let scoreCardPanel = "https://gateway.pinata.cloud/ipfs/" + scoreCardIPFS;
-let gamePanel = "https://gateway.pinata.cloud/ipfs/" + gameIPFS;
-
+// IMPORTRANT TODO: Defifa IPFA Pinner/Gateway ??
+let artWorkPanel = "https://tan-hidden-whippet-249.mypinata.cloud/ipfs/" + artWorkIPFS;
+let scoreCardPanel = "https://tan-hidden-whippet-249.mypinata.cloud/ipfs/" + scoreCardIPFS;
+let buttonImage = "https://tan-hidden-whippet-249.mypinata.cloud/ipfs/" + buttonImageIPFS;
 let defifaBlue = [19, 228, 240];
 
-
+// Consider moving into smart contract??
 let txt1 = [
-  ["Prize Pool: ", defifaBlue],
-  [prizePool, defifaBlue],
-  ["", defifaBlue]
+  [txt_1, txt_1Color, txt_1Size]
 ];
 let txt2 = [
-  ["Phase: ", defifaBlue],
-  [phase, defifaBlue],
-  ["", defifaBlue]
+  [txt_2, txt_2Color, txt_2Size]
 ];
 let txt3 = [
-  ["Time Remaining: ", defifaBlue],
-  [timeRemaining, defifaBlue],
-  ["", defifaBlue]
+  [txt_3, txt_3Color, txt_3Size],
 ];
 let txt4 = [
-  ["Total Minted: ", defifaBlue],
-  [totalMinted, defifaBlue],
-  ["", defifaBlue]
+  [txt_4, txt_4Color, txt_4Size],
 ];
 let txt5 = [
-  ["Burn to Claim: ", defifaBlue],
-  [burnToClaim, defifaBlue],
-  ["", defifaBlue]
+  [txt_5, txt_5Color, txt_5Size],
 ];
 let txt6 = [
-  ["Team: ", defifaBlue],
-  [tierName, defifaBlue],
-  ["", defifaBlue]
+  [txt_6, txt_6Color, txt_6Size],
 ];
-let pageImg = []
+
+let pageImg = [];
+let buttonImg;
 
 function preload() {
   pageImg[0] = loadImage(artWorkPanel);
   pageImg[1] = loadImage(scoreCardPanel);
-  pageImg[2] = loadImage(gamePanel);
+  buttonImg = loadImage(buttonImage);
+
 }
 function setup() {
   myFont = loadFont(font);
-  createCanvas(400, 400);
+  createCanvas(500, 500);
   camLoc = createVector(0, 0); // camLoc just means camera location. this will be the location of the canvas.
   for (let i = 0; i < numOfPages; i++) {
     pages[i] = new Page(canvas.width / 2 * i, 0, i, pageImg[i]);
   }
   timer = canvas.width / 2
 
-  buttL = new Button(10, canvas.height / 2 - 30, 50, 25, "<");
-  buttR = new Button(canvas.width / 2 - 90, canvas.height / 2 - 30, 50, 25, ">");
-
+  //buttL = new Button(10, canvas.height / 2 - 50, 50, 50, buttonImg);
+  
+  buttL = new Button(canvas.width / 2 - 90, 5, 75, 75, buttonImg);
+  buttR = new Button(canvas.width / 2 - 90, 5, 75, 75, buttonImg);
 }
 
 function draw() {
@@ -133,9 +151,10 @@ function slide() {
     camLoc.x = 0;
     buttL.loc.x = -100 // sets the location of the left button out of view
   } else {
-    buttL.loc.x = 10, canvas.height / 2 - 30 // sets the location of the left button inside the view of the page
+    //buttL.loc.x = 0, canvas.height / 2 - 30 // sets the location of the left button inside the view of the page
+    buttL.loc.x = canvas.height / 2 - 75
   }
-  // checks if the camLoc is past the last page and set it to the loc of hte last page if it is.
+  // checks if the camLoc is past the last page and set it to the loc of the last page if it is.
   if (-camLoc.x >= pages[pages.length - 1].loc.x) {
     timer = canvas.width / 2
     movingRight = false;
@@ -143,7 +162,7 @@ function slide() {
     camLoc.x = -pages[pages.length - 1].loc.x
     buttR.loc.x = -100
   } else {
-    buttR.loc.x = canvas.height / 2 - 90 // sets the location of the right button inside the view of the page
+    buttR.loc.x = canvas.height / 2 - 75 // sets the location of the right button inside the view of the page
 
   }
 
@@ -157,8 +176,10 @@ function drawtext(x, y, text_array) {
     var part = text_array[i];
     var t = part[0];
     var c = part[1];
+    var s = part[2];
     var w = textWidth(t);
     fill(c);
+    textSize(s);
     text(t, pos_x, y);
     pos_x += w;
   }
@@ -196,23 +217,20 @@ class Page {
 
   run() {
     // image(this.img, this.loc.x, this.loc.y, canvas.width/2, canvas.heigh/2)
-    image(this.img, this.loc.x, this.loc.y, 400, 400)
-
-    // just shows the text
-    textSize(20);
+    image(this.img, this.loc.x, this.loc.y, 500, 500)
     textAlign(LEFT);
     textFont(myFont);
 
-    //drawtext(this.loc.x + 112, this.loc.y + 30, string );
+    //drawtext(this.loc.x + 65, this.loc.y + 30, string );
     //KMac clean this up, dry
     if (this.pageNum == 2) {
-      drawtext(this.loc.x + 112, this.loc.y + 30, txt6);
-      drawtext(this.loc.x + 112, this.loc.y + 70, txt1);
-      drawtext(this.loc.x + 112, this.loc.y + 110, txt2);
-      drawtext(this.loc.x + 112, this.loc.y + 150, txt3);
-      drawtext(this.loc.x + 112, this.loc.y + 190, txt4);
-      drawtext(this.loc.x + 112, this.loc.y + 230, txt5);
-    };
+      drawtext(this.loc.x + txt_1_x, this.loc.y + txt_1_y, txt1);
+      drawtext(this.loc.x + txt_2_x, this.loc.y + txt_2_y, txt2);
+      drawtext(this.loc.x + txt_3_x, this.loc.y + txt_3_y, txt3);
+      drawtext(this.loc.x + txt_4_x, this.loc.y + txt_4_y, txt4);
+      drawtext(this.loc.x + txt_5_x, this.loc.y + txt_5_y, txt5);
+      drawtext(this.loc.x + txt_6_x, this.loc.y + txt_6_y, txt6);
+      };
     if (this.pageNum == 3) {
       // to do set text and buttons
     }
@@ -225,12 +243,12 @@ class Page {
   }
 }
 class Button {
-  constructor(x, y, w, h, t) {
+  constructor(x, y, w, h, inImg) {
     this.loc = new createVector(x, y);
     this.w = w;
     this.h = h;
-    this.text = t;
-    this.clr = "white"
+    this.clr = "white";
+    this.img  = inImg;
   }
   run() {
     this.render()
@@ -239,12 +257,13 @@ class Button {
   render() {
     fill(this.clr)
     stroke(20)
-    strokeWeight(2)
-    rect(this.loc.x, this.loc.y, this.w, this.h, 10)
+    strokeWeight(0)
+    //rect(this.loc.x, this.loc.y, this.w, this.h, 10)
     fill("black")
     noStroke()
     textSize(15)
-    text(this.text, this.loc.x + (this.w / 2) - 5, this.loc.y + (this.h / 2) + 3)
+    //text(this.text, this.loc.x + (this.w / 2) - 5, this.loc.y + (this.h / 2) + 3)
+    image(this.img,this.loc.x, this.loc.y, this.w, this.h);
   }
   checkMouse() {
     if (
