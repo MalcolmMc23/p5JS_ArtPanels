@@ -4,12 +4,42 @@ let artWorkIPFS = "QmSX1ktBWiTX1BJs8hDEVN93vRVJq6iNrpR36ByjRXfLra"
 let scoreCardIPFS = "QmeB47KfbHetHPpQrPgmD9CxCDb9e2U9j9fxLr1FM3vzMo"
 let buttonImageIPFS = "QmdpL1xN4cAHQw4P1FZzw9P3oQofA8h45PfuTTbpV4BbJV"
 // Game panel text
-let tierName = "Caveliers"
-let prizePool = '123' // Ξ
-let phase = '1'; // 1 = mint, 2 = refund, 3 = active game 4 = game over claim open
-let timeRemaining = 'xyz';
-let totalMinted = '123'; // Int
-let burnToClaim = '69.4201'; // Ξ
+let txt_1Size = 20;
+let txt_1 = 'Defifiaga' 
+let txt_1Color = "#17e4f1";
+let txt_1_x = 40;
+let txt_1_y = 80;
+
+let txt_2Size = 20;
+let txt_2 = 'Starts soon. Last chance for refund.'; 
+let txt_2Color = "#fea282";
+let txt_2_x = 40;
+let txt_2_y = 250;
+
+let txt_3Size = 20;
+let txt_3 = 'GAME PHASE 4 OF 4';
+let txt_3Color = "#17e4f1";
+let txt_3_x = 40;
+let txt_3_y = 220;
+
+let txt_4Size = 40;
+let txt_4 = 'Golden State'; 
+let txt_4Color = "#fea282";
+let txt_4_x = 40;
+let txt_4_y = 130;
+
+let txt_5Size = 16;
+let txt_5 = 'text 5'; 
+let txt_5Color = "#FFFFFF";
+let txt_5_x = 40;
+let txt_5_y = 370;
+
+let txt_6Size = 16;
+let txt_6 = 'Text 6'; 
+let txt_6Color = "#FFFFFF";
+let txt_6_x = 40;
+let txt_6_y = 400;
+
 // Font file
 // let font = has been moved to own file for testing. Will be set in solidity.
 // called in sol using DefifaFontImporter.getSkinnyFontSource(),
@@ -29,35 +59,24 @@ let defifaBlue = [19, 228, 240];
 
 // Consider moving into smart contract??
 let txt1 = [
-  ["Prize Pool: ", defifaBlue],
-  [prizePool, defifaBlue],
-  ["", defifaBlue]
+  [txt_1, txt_1Color, txt_1Size]
 ];
 let txt2 = [
-  ["Phase: ", defifaBlue],
-  [phase, defifaBlue],
-  ["", defifaBlue]
+  [txt_2, txt_2Color, txt_2Size]
 ];
 let txt3 = [
-  ["Time Remaining: ", defifaBlue],
-  [timeRemaining, defifaBlue],
-  ["", defifaBlue]
+  [txt_3, txt_3Color, txt_3Size],
 ];
 let txt4 = [
-  ["Total Minted: ", defifaBlue],
-  [totalMinted, defifaBlue],
-  ["", defifaBlue]
+  [txt_4, txt_4Color, txt_4Size],
 ];
 let txt5 = [
-  ["Burn to Claim: ", defifaBlue],
-  [burnToClaim, defifaBlue],
-  ["", defifaBlue]
+  [txt_5, txt_5Color, txt_5Size],
 ];
 let txt6 = [
-  ["Team: ", defifaBlue],
-  [tierName, defifaBlue],
-  ["", defifaBlue]
+  [txt_6, txt_6Color, txt_6Size],
 ];
+
 let pageImg = [];
 let buttonImg;
 
@@ -69,7 +88,7 @@ function preload() {
 }
 function setup() {
   myFont = loadFont(font);
-  createCanvas(400, 400);
+  createCanvas(500, 500);
   camLoc = createVector(0, 0); // camLoc just means camera location. this will be the location of the canvas.
   for (let i = 0; i < numOfPages; i++) {
     pages[i] = new Page(canvas.width / 2 * i, 0, i, pageImg[i]);
@@ -157,8 +176,10 @@ function drawtext(x, y, text_array) {
     var part = text_array[i];
     var t = part[0];
     var c = part[1];
+    var s = part[2];
     var w = textWidth(t);
     fill(c);
+    textSize(s);
     text(t, pos_x, y);
     pos_x += w;
   }
@@ -196,23 +217,20 @@ class Page {
 
   run() {
     // image(this.img, this.loc.x, this.loc.y, canvas.width/2, canvas.heigh/2)
-    image(this.img, this.loc.x, this.loc.y, 400, 400)
-
-    // just shows the text
-    textSize(20);
+    image(this.img, this.loc.x, this.loc.y, 500, 500)
     textAlign(LEFT);
     textFont(myFont);
 
     //drawtext(this.loc.x + 65, this.loc.y + 30, string );
     //KMac clean this up, dry
     if (this.pageNum == 2) {
-      drawtext(this.loc.x + 65, this.loc.y + 50, txt6);
-      drawtext(this.loc.x + 65, this.loc.y + 90, txt1);
-      drawtext(this.loc.x + 65, this.loc.y + 130, txt2);
-      drawtext(this.loc.x + 65, this.loc.y + 170, txt3);
-      drawtext(this.loc.x + 65, this.loc.y + 210, txt4);
-      drawtext(this.loc.x + 65, this.loc.y + 250, txt5);
-    };
+      drawtext(this.loc.x + txt_1_x, this.loc.y + txt_1_y, txt1);
+      drawtext(this.loc.x + txt_2_x, this.loc.y + txt_2_y, txt2);
+      drawtext(this.loc.x + txt_3_x, this.loc.y + txt_3_y, txt3);
+      drawtext(this.loc.x + txt_4_x, this.loc.y + txt_4_y, txt4);
+      drawtext(this.loc.x + txt_5_x, this.loc.y + txt_5_y, txt5);
+      drawtext(this.loc.x + txt_6_x, this.loc.y + txt_6_y, txt6);
+      };
     if (this.pageNum == 3) {
       // to do set text and buttons
     }
